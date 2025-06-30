@@ -35,19 +35,17 @@ app.get('/api/hello', async (_req, res) => {
 
 // Endpoint para listar tablas y columnas
 app.get('/api/tables', async (req, res) => {
-  try {
-    // Solo obtener la tabla 'videorender'
-    const columnsResult = await pool.query(`
-     SELECT * FROM videorender
-     ORDER BY created_at DESC
-    `);
-
-    res.json([{
-      table: 'videorender',
-      columns: columnsResult.rows
-    }]);
+    try {
+    const query = `
+      SELECT * FROM "VideoRender"
+      ORDER BY "createdAt" DESC
+    `;
+    const { rows } = await pool.query(query);
+    //console.log('Tabla consultada: VideoRender');
+    //console.log('Datos obtenidos:', rows);
+    res.json(rows);
   } catch (error) {
-    res.status(500).json({ error: 'Error obteniendo columnas de videorender' });
+    res.status(500).json({ error: 'Error al obtener videos' });
   }
 });
 
